@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AndroidLocalNotificationsAll</string>
+
+
+    <string name="NEWS_CHANNEL_ID">news</string>
+    <string name="CHANNEL_NEWS">News</string>
+    <string name="CHANNEL_DESCRIPTION">Get informed with new updates</string>
+
+    <string name="MESSAGE_CHANNEL_ID">Message</string>
+    <string name="CHANNEL_MESSAGE">Messages</string>
+    <string name="MESSAGE_CHANNEL_DESCRIPTION">Get informed with new  MESSAGE updates</string>
+
+    <string name="searchuser_forgroundservice_channel_id">781</string>
+</resources>
