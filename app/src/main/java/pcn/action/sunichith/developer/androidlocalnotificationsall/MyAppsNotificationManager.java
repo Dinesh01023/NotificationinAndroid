@@ -2,6 +2,8 @@ package pcn.action.sunichith.developer.androidlocalnotificationsall;
 
 import static androidx.core.app.RemoteInput.EDIT_CHOICES_BEFORE_SENDING_DISABLED;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,12 +12,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.widget.RemoteViews;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
+import androidx.core.graphics.drawable.IconCompat;
 
 
 public class MyAppsNotificationManager {
@@ -43,6 +48,17 @@ public class MyAppsNotificationManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setDescription(channelDescription);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public void registerNotificationChannelChannelbuble(String channelId, String channelName, String channelDescription) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription(channelDescription);
+            notificationChannel.setAllowBubbles(true);
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
@@ -241,6 +257,39 @@ public class MyAppsNotificationManager {
                 .setCustomContentView(remotecollapsview)
                 .setCustomBigContentView(remoteViewsexpanded);
 
+        notificationManagerCompat.notify(notificationId,builder.build());
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public void triggerNotificationBuble(Class targetNotificationActivity, String channelId, String title, String text, String bigText, int priority, boolean autoCancel, int notificationId){
+
+        Intent intent = new Intent(context, targetNotificationActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE);
+
+        @SuppressLint("RestrictedApi") NotificationCompat.BubbleMetadata bubbleData =
+                new NotificationCompat.BubbleMetadata.Builder()
+                        .setDesiredHeight(600)
+                        .setAutoExpandBubble(true)
+                        .setIcon(IconCompat.createFromIcon(Icon.createWithResource(context, R.drawable.avatar_1)))
+                            .setIntent(pendingIntent)
+                .build();
+
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,channelId)
+                .setSmallIcon(R.drawable.dharma2)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.dharma2))
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setChannelId(channelId)
+                .setAutoCancel(true)
+                .setBubbleMetadata(bubbleData);
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.notify(notificationId,builder.build());
     }
 

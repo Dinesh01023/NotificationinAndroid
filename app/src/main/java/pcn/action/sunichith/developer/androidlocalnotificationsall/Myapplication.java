@@ -3,6 +3,7 @@ package pcn.action.sunichith.developer.androidlocalnotificationsall;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 
 
 public class Myapplication extends Application {
@@ -25,6 +26,12 @@ public class Myapplication extends Application {
                 getString(R.string.CHANNEL_MESSAGE),
                 getString(R.string.MESSAGE_CHANNEL_DESCRIPTION));
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            myAppsNotificationManager.registerNotificationChannelChannelbuble(
+                    getString(R.string.Buble_CHANNEL_ID),
+                    getString(R.string.CHANNEL_Buble),
+                    getString(R.string.Buble_CHANNEL_DESCRIPTION));
+        }
 
 
     }
@@ -66,6 +73,12 @@ public class Myapplication extends Application {
 
     public void triggerNotificationCustomview(Class targetNotificationActivity, String channelId, String title, String text, String bigText, int priority, boolean autoCancel, int notificationId, int pendingIntentFlag){
         myAppsNotificationManager.triggerNotificationCustomviews(targetNotificationActivity,channelId,title,text, bigText, priority, autoCancel,notificationId, pendingIntentFlag);
+    }
+
+    public void triggerNotificationbuble(Class targetNotificationActivity, String channelId, String title, String text, String bigText, int priority, boolean autoCancel, int notificationId, int pendingIntentFlag){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            myAppsNotificationManager.triggerNotificationBuble(targetNotificationActivity,channelId,title,text, bigText, priority, autoCancel,notificationId);
+        }
     }
 
     public void cancelNotification(int notificaitonId){

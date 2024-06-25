@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,12 +19,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    Button btn_send,btn_update,RemoteInput_btn,addaction_btn,customview_btn;
+    Button btn_send,btn_update,RemoteInput_btn,addaction_btn,customview_btn,createbuble;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main4);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU)
         {
             if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.POST_NOTIFICATIONS)!= PackageManager.PERMISSION_GRANTED){
@@ -121,6 +122,15 @@ public class MainActivity extends AppCompatActivity {
                         true,
                         Integer.parseInt("1001"),
                         PendingIntent.FLAG_MUTABLE);
+            }
+        });
+
+
+        createbuble=findViewById(R.id.createBubble);
+        createbuble.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             startActivity(new Intent(MainActivity.this, com.example.android.people.MainActivity.class));
             }
         });
 
